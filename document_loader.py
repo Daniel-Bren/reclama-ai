@@ -82,11 +82,15 @@ documentos = carregar_documento(CAMINHO_PDF)
 
 chunks = criar_chunks(documentos)
 
-print(f"Páginas processadas: {len(documentos)}")
-print(f"Chunks criados: {len(chunks)}")
+if __name__ == "__main__":
+    documentos = carregar_documento(CAMINHO_PDF)
+    chunks = criar_chunks(documentos)
 
-print("\n--- PRIMEIRO CHUNK ---\n")
-print(chunks[0]["texto"])
+    print(f"Páginas processadas: {len(documentos)}")
+    print(f"Chunks criados: {len(chunks)}")
 
-print("\n--- METADADOS ---\n")
-print(chunks[0]["metadados"])
+    print("\n--- PRIMEIRO CHUNK ---\n")
+    print(chunks[0]["texto"])
+
+    print("\n--- METADADOS ---\n")
+    print(chunks[0]["metadados"])

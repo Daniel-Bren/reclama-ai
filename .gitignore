@@ -217,3 +217,6 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 .idea/
+
+chroma_db/
+faiss_index/
