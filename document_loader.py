@@ -5,27 +5,67 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 CAMINHO_PDF = "data/codigo_defesa_consumidor.pdf"
 
 def criar_chunks(documentos):
-    divisor = RecursiveCharacterTextSplitter(
-        chunk_size=1000,
+    """
+    Divide o documento priorizando a estrutura jurídica por artigos.
+    Artigos muito grandes ainda são subdivididos.
+    """
+
+    divisor_artigo_longo = RecursiveCharacterTextSplitter(
+        chunk_size=1600,
         chunk_overlap=200,
         length_function=len
     )
 
     chunks = []
+    contador_chunk = 0
+
+    # Procura inícios como:
+    # Art. 2º
+    # Art. 18.
+    # Art. 54-A
+    padrao_artigo = r"(?=Art\.\s*\d+(?:-[A-Z])?[º°]?)"
 
     for documento in documentos:
-        textos_divididos = divisor.split_text(documento["texto"])
+        texto = documento["texto"]
 
-        for indice, texto_chunk in enumerate(textos_divididos):
-            chunk = {
-                "texto": texto_chunk,
-                "metadados": {
-                    **documento["metadados"],
-                    "chunk": indice
+        partes = re.split(padrao_artigo, texto)
+
+        for parte in partes:
+            parte = parte.strip()
+
+            if not parte:
+                continue
+
+            # Descobre qual artigo existe nesse trecho, se houver
+            artigo_encontrado = re.match(
+                r"Art\.\s*(\d+(?:-[A-Z])?[º°]?)",
+                parte
+            )
+
+            if artigo_encontrado:
+                numero_artigo = artigo_encontrado.group(1)
+            else:
+                numero_artigo = "contexto"
+
+            # Artigos muito grandes ainda podem precisar ser divididos
+            if len(parte) > 1600:
+                subpartes = divisor_artigo_longo.split_text(parte)
+            else:
+                subpartes = [parte]
+
+            for indice_parte, texto_chunk in enumerate(subpartes):
+                chunk = {
+                    "texto": texto_chunk,
+                    "metadados": {
+                        **documento["metadados"],
+                        "artigo": numero_artigo,
+                        "parte_artigo": indice_parte,
+                        "chunk": contador_chunk
+                    }
                 }
-            }
 
-            chunks.append(chunk)
+                chunks.append(chunk)
+                contador_chunk += 1
 
     return chunks
 

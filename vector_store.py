@@ -4,7 +4,7 @@ from langchain_core.documents import Document
 
 from document_loader import carregar_documento, criar_chunks, CAMINHO_PDF
 
-MODELO_EMBEDDING = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+MODELO_EMBEDDING = "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
 PASTA_BANCO = "faiss_index"
 
 def criar_banco_vetorial():
