@@ -1,0 +1,13 @@
+.git
+.github
+.idea
+.venv
+__pycache__
+*.pyc
+
+.env
+
+faiss_index
+chroma_db
+
+feedback
