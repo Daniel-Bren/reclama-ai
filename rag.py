@@ -27,7 +27,7 @@ def montar_contexto(documentos):
 
     return "\n\n".join(partes)
 
-def responder(pergunta):
+def responder(pergunta, historico=""):
     documentos = buscar_documentos(pergunta)
 
     contexto = montar_contexto(documentos)
@@ -51,6 +51,10 @@ Regras:
   diga claramente:
   "Não encontrei essa informação nos documentos disponíveis."
 - Explique a resposta em linguagem simples e acessível.
+- Use o histórico apenas para compreender a continuidade da conversa.
+- Informações sobre direitos do consumidor devem sempre estar respaldadas
+  pelo CONTEXTO RECUPERADO DOS DOCUMENTOS.
+- O histórico da conversa não deve ser tratado como fonte jurídica.
 - Quando possível, mencione o artigo relacionado.
 - Não se apresente como advogado.
 - A resposta tem caráter informativo e não substitui orientação jurídica profissional.
@@ -59,11 +63,14 @@ Regras:
         ),
         (
             "human",
-            """
-PERGUNTA:
+"""
+HISTÓRICO RECENTE DA CONVERSA:
+{historico}
+
+PERGUNTA ATUAL:
 {pergunta}
 
-CONTEXTO:
+CONTEXTO RECUPERADO DOS DOCUMENTOS:
 {contexto}
 """
         )
@@ -80,6 +87,7 @@ CONTEXTO:
 
     resposta = chain.invoke({
         "pergunta": pergunta,
+        "historico": historico,
         "contexto": contexto
     })
 

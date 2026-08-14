@@ -1,9 +1,10 @@
 from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
-
+from functools import lru_cache
 
 from vector_store import MODELO_EMBEDDING, PASTA_BANCO
 
+@lru_cache(maxsize=1)
 def carregar_banco_vetorial():
     embedding = HuggingFaceEmbeddings(
         model_name=MODELO_EMBEDDING
