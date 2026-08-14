@@ -118,10 +118,6 @@ def carregar_documento(caminho_pdf):
     return documentos
 
 
-documentos = carregar_documento(CAMINHO_PDF)
-
-chunks = criar_chunks(documentos)
-
 if __name__ == "__main__":
     documentos = carregar_documento(CAMINHO_PDF)
     chunks = criar_chunks(documentos)

@@ -1,6 +1,6 @@
 from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
-from torch.nn.functional import embedding
+
 
 from vector_store import MODELO_EMBEDDING, PASTA_BANCO
 
