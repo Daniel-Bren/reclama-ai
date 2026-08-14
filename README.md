@@ -35,7 +35,7 @@ Principais componentes:
 - `rag.py`: geração da resposta com Gemini.
 - `app.py`: interface web em Streamlit.
 
-Tecnologias
+Tecnologias:
 - Python 3.11
 - Streamlit
 - LangChain
@@ -46,10 +46,10 @@ Tecnologias
 - Docker
 - Oracle Cloud Infrastructure
 
-Para execucao local nstale as dependências:
+Para execução local, instale as dependências:
 python -m pip install -r requirements.txt
 
-Recursos da interface
+Recursos da interface:
 - A interface permite:
 - conversar com o agente;
 - manter o contexto da conversa;
@@ -76,8 +76,8 @@ O projeto possui Dockerfile para implantação em nuvem.
 A arquitetura prevista para produção é:
 Docker → OCI Container Registry → OCI Container Instance.
 
-Testes realizados
-Foram validados cenários como:
+Testes realizados:
+Foram validados cenários como
 - definição de consumidor;
 - produto com defeito;
 - continuidade de conversa;
