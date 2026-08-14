@@ -1,11 +1,24 @@
-from langchain_community.vectorstores import FAISS
-from langchain_huggingface import HuggingFaceEmbeddings
+import os
 from functools import lru_cache
 
-from vector_store import MODELO_EMBEDDING, PASTA_BANCO
+from langchain_community.vectorstores import FAISS
+from langchain_huggingface import HuggingFaceEmbeddings
+
+from vector_store import (
+    MODELO_EMBEDDING,
+    PASTA_BANCO,
+    criar_banco_vetorial
+)
+
 
 @lru_cache(maxsize=1)
 def carregar_banco_vetorial():
+    if not os.path.exists(PASTA_BANCO):
+        print("Índice FAISS não encontrado.")
+        print("Criando índice vetorial...")
+
+        criar_banco_vetorial()
+
     embedding = HuggingFaceEmbeddings(
         model_name=MODELO_EMBEDDING
     )
@@ -15,6 +28,7 @@ def carregar_banco_vetorial():
         embedding,
         allow_dangerous_deserialization=True
     )
+
     return banco
 
 def buscar_documentos(pergunta, quantidade=6):
