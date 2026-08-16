@@ -134,7 +134,10 @@ def registrar_execucao(pergunta, resposta, documentos, tempo_resposta):
         ],
         "tempo_resposta_segundos": round(tempo_resposta, 2),
     }
-    print(json.dumps(registro, ensure_ascii=False))
+    print(
+        "EXECUCAO_RECLAMA_AI " + json.dumps(registro, ensure_ascii=False),
+        flush=True
+    )
 
 def responder_pergunta_pendente():
     pendente = st.session_state.get("pergunta_pendente")
