@@ -1,6 +1,8 @@
 import html
 import re
 from datetime import datetime
+import json
+import time
 
 import streamlit as st
 
@@ -117,11 +119,29 @@ def registrar_pergunta(pergunta):
         "historico": historico,
     }
 
+def registrar_execucao(pergunta, resposta, documentos, tempo_resposta):
+    registro = {
+        "timestamp": datetime.now().isoformat(),
+        "pergunta": pergunta,
+        "resposta": resposta,
+        "fontes": [
+            {
+                "arquivo": doc.metadata.get("arquivo"),
+                "pagina": doc.metadata.get("pagina_pdf"),
+                "artigo": doc.metadata.get("artigo"),
+            }
+            for doc in documentos or []
+        ],
+        "tempo_resposta_segundos": round(tempo_resposta, 2),
+    }
+    print(json.dumps(registro, ensure_ascii=False))
 
 def responder_pergunta_pendente():
     pendente = st.session_state.get("pergunta_pendente")
     if not pendente:
         return
+
+    inicio = time.perf_counter()
 
     with st.spinner("Consultando os documentos..."):
         resposta, documentos = responder(
@@ -129,6 +149,14 @@ def responder_pergunta_pendente():
             historico=pendente["historico"],
         )
 
+    tempo_resposta = time.perf_counter() - inicio
+
+    registrar_execucao(
+        pergunta=pendente["pergunta"],
+        resposta=resposta,
+        documentos=documentos,
+        tempo_resposta=tempo_resposta,
+    )
     st.session_state.mensagens.append(
         {
             "role": "assistant",
