@@ -10,3 +10,4 @@ langchain-google-genai
 
 sentence-transformers
 faiss-cpu
+torchvision
