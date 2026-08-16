@@ -84,3 +84,12 @@ Foram validados cenários como
 - pergunta fora do escopo;
 - exibição de fontes;
 - feedback positivo e negativo.
+
+Registro de execução
+As execuções do agente são registradas em JSON nos logs do ambiente em nuvem, contendo:
+
+- timestamp
+- pergunta
+- resposta
+- fontes recuperadas
+- tempo de resposta.
